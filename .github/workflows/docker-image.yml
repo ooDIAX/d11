@@ -18,7 +18,7 @@ jobs:
       - name: Deploy with git pull and running update.sh on the instance
         run: |
           echo "Deploying to ${{ vars.SERVER_ADDRESS }} ..."
-          ssh -i ~/.ssh/id_rsa ubuntu@"${{ vars.SERVER_ADDRES }}" "cd d11 && git checkout -- . && git pull && chmod u+x update.sh && ./update.sh"
+          ssh -i ~/.ssh/id_rsa ubuntu@"${{ vars.SERVER_ADDRESS }}" "cd d11 && git checkout -- . && git pull && chmod u+x update.sh && ./update.sh"
 #          ssh -i ~/.ssh/id_rsa ubuntu@"${{ vars.DEPLOY_SERVER_IP }}" "gunicorn -b 0.0.0.0:8888 mini-server:app --daemon --log-file ./logs/webserver.log"
 
 #          cat ~/.ssh/id_rsa
