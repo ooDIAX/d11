@@ -1,0 +1,26 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "auto-deploy" ]
+  pull_request:
+    branches: [ "auto-deploy" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create SSH key
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ vars.SERVER_ADDRESS }}" > ~/.ssh/known_hosts
+      - name: Deploy with git pull and running update.sh on the instance
+        run: |
+          echo "Deploying to ${{ vars.DEPLOY_SERVER_IP }} ..."
+          ssh -i ~/.ssh/id_rsa ubuntu@"${{ vars.DEPLOY_SERVER_IP }}" "cd py-db-demo-one && git checkout -- . && git pull && chmod u+x update.sh && ./update.sh"
+#          ssh -i ~/.ssh/id_rsa ubuntu@"${{ vars.DEPLOY_SERVER_IP }}" "gunicorn -b 0.0.0.0:8888 mini-server:app --daemon --log-file ./logs/webserver.log"
+
+#          cat ~/.ssh/id_rsa
+#          cat ~/.ssh/known_hosts
+#        run: rsync -rav --delete build/ user@host:/
