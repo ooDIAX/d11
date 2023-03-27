@@ -47,7 +47,7 @@ def main():
     logging.info('Done.')
 
 if __name__ == "__main__":
-    x = 1
+    
     format = "SRV: %(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%F-%H-%M-%S")
